@@ -13,7 +13,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.set('port', (process.env.PORT || 5000)); 
+//app.set('port', (process.env.PORT || 5000)); 
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended: true}));
@@ -55,8 +55,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+//app.listen(app.get('port'), function() {
+ // console.log('Node app is running on port', app.get('port'));
+//});
 
 module.exports = app;
