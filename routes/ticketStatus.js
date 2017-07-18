@@ -1,30 +1,33 @@
 var express = require('express');
 var router = express.Router();
-var Store = require("jfs");
-var db = new Store("data",{pretty:true});
+var MongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://52.71.161.217:27017/verizon_neo';
+var str = "";
 
 
 
-router.get('/', function(req, res, next) {
+
+router.post('/', function(req, res, next) {
+
+    MongoClient.connect(url, function(err, db) {
+
+           
+            var ticketNumber = req.body.ticketNumber;
+            var serviceId = req.body.serviceId;
+
+            var query = {};
+
+            if (ticketNumber )
+                query.ticket_number = ticketNumber;
+
+            var cursor = db.collection('Tickets').find(query).toArray();
+            cursor.then(function(result){
+                console.log(result);
+                res.send(result);
+                db.close();
+            });
 	
-	var ticketNumber = req.query.ticketNumber;
-	
-	//var returndate = req.query.returndate;
-	var obj = db.getSync("ticketDetails");
-	var result = {
-        "data":[]
-    };		
-    	obj.data.map(function(data){
-    		if(data.ticket_number === ticketNumber){
-    			//flight.type = "going";
-    			result.data.push(data);
-    		} /*else if(flight.date === date && flight.departureairport.code === to && flight.arrivalairport.code === from){
-               flight.type = "return";
-               result.flights.push(flight);
-    		}*/
-    	});
-    res.send(result);
-    	
+    });
 });
 
 	
